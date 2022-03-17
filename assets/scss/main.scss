@@ -1,0 +1,15 @@
+// base theme for project
+@import "./utils/variables.scss";
+@import "./utils/mixins.scss";
+@import "./base/font.scss";
+@import "./base/reset.scss";
+@import "./base/typo.scss";
+
+// custom page
+@import "./layouts/header/header.scss";
+@import "./pages/index.scss";
+
+// components
+@import "./components/dropdown/dropdown";
+@import "./components/tag/tag";
+@import "./components/searchBar/searchBar";

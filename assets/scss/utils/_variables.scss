@@ -1,0 +1,33 @@
+/*Color Base*/
+
+$color-dark: #000000;
+$color-grey: #525252;
+$color-lightgrey: #fafafa;
+$color-clear: #ffffff;
+$transparent: transparent;
+
+/*dropdown*/
+
+$first-dropdown: #3282f7;
+$second-dropdown: #68d9a4;
+$third-dropdown: #ed6454;
+
+/*Box shadow*/
+$shadow: 0 0 0.5rem rgb(0 0 0 / 25%);
+$shadow-dark: 0 5px 10px 1px darken($color-grey, 6%);
+$shadow-black: 6px 8px 17px -9px $color-dark;
+$shadow-black--xl: 6px 8px 20px -6px $color-dark;
+
+/*Border*/
+$curler: 5px;
+$arrondi: 10px;
+$arrondi_md: 25px;
+$round: 1em;
+
+//devices
+$xsm: 414px;
+$sm: 768px;
+$md: 1024px;
+$lm: 1440px;
+$xlm: 1920px;
+$xxlm: 2500px;
