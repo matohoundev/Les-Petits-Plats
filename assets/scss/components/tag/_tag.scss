@@ -1,0 +1,25 @@
+.tag {
+  width: fit-content;
+  height: 37px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  border-radius: 5px;
+  color: white;
+  &-ingredient {
+    background-color: $first-dropdown;
+  }
+  &-device {
+    background-color: $second-dropdown;
+  }
+  &-utensil {
+    background-color: $third-dropdown;
+  }
+  i {
+    font-size: 10px;
+    padding-top: 3px;
+    padding-bottom: 1px;
+  }
+}

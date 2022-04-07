@@ -10,6 +10,11 @@
 @import "./pages/index.scss";
 
 // components
-@import "./components/dropdown/dropdown";
-@import "./components/tag/tag";
-@import "./components/searchBar/searchBar";
+@import "./components/dropdown/dropdown.scss";
+@import "./components/card/card.scss";
+@import "./components/tag/tag.scss";
+@import "./components/searchBar/searchBar.scss";
+
+.red {
+  border: 1px solid red;
+}

@@ -1,0 +1,11 @@
+.card {
+  li {
+    font-size: 12px;
+  }
+  &-firstBg {
+    background-color: $color-darkgrey;
+  }
+  &-secondBg {
+    background-color: $color-grey;
+  }
+}
