@@ -43,46 +43,75 @@
             <i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
           ></span>
         </div>
-        <div class="filters">
+        <div class="filters mt-4 gap-x-5 flex w-10/12">
+          <!-- 1 -->
           <div class="filter filter--ingredient">
             <label id="ingredient-filter-label" for="ingredient">
-              <span>Ingredients</span>
+              <span id="ingredient-label" class="">Ingredients</span>
               <input
                 type="text"
                 id="ingredient"
                 placeholder="Rechercher un ingrédient"
+                class="hidden"
               />
-              <i id="filter-icon" class="fas fa-chevron-down"></i>
+              <i
+                id="ingredient-chevron"
+                class="fas fa-chevron-down chevron"
+              ></i>
             </label>
-            <ul class="filter--listing"></ul>
+            <ul
+              id="ingredient-liste"
+              class="mt-5 gap-y-3 flex flex-wrap listing hidden"
+            >
+              <!-- <li>Pâte feuilletée</li> -->
+            </ul>
+          </div>
+          <!-- 2 -->
+          <div class="filter filter--appliance">
+            <label id="appliance-filter-label" for="appliance">
+              <span>Appareils</span>
+              <input
+                type="text"
+                id="appliance"
+                placeholder="Rechercher un appliance"
+                class="hidden"
+              />
+              <i id="appliance-chevron" class="fas fa-chevron-down chevron"></i>
+            </label>
+            <ul
+              id="appliance-liste"
+              class="mt-5 gap-y-3 flex flex-wrap listing hidden"
+            >
+              <!-- <li>Pâte feuilletée</li> -->
+            </ul>
+          </div>
+          <!-- 3 -->
+          <div class="filter filter--ustensil">
+            <label id="ingredient-filter-label" for="ustensil">
+              <span>Ustensiles</span>
+              <input
+                type="text"
+                id="ustensil"
+                placeholder="Rechercher un ustensiles"
+                class="hidden"
+              />
+              <i id="ustensil-chevron" class="fas fa-chevron-down chevron"></i>
+            </label>
+            <ul
+              id="ustensil-liste"
+              class="mt-5 gap-y-3 flex flex-wrap listing hidden"
+            >
+              <!-- <li>Pâte feuilletée</li> -->
+            </ul>
           </div>
         </div>
       </nav>
       <main class="mt-5">
-        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <li class="card rounded-md">
-            <div class="w-full h-44 card-firstBg"></div>
-            <div class="flex h-48 p-5 card-secondBg">
-              <div class="w-1/2 flex flex-col gap-y-3">
-                <h3 class="text-lg">Limonade de Coco</h3>
-                <ul>
-                  <li><b>Lait de coco:</b> 400ml</li>
-                  <li><b>Jus de citron:</b> 2</li>
-                  <li><b>Crème de coco:</b> 4 cuillères</li>
-                  <li><b>Sucre:</b> 20g</li>
-                  <li><b>Glaçons:</b> 2</li>
-                </ul>
-              </div>
-              <div class="w-1/2 flex flex-col items-end gap-y-3">
-                <span><i class="far fa-clock"></i><b> 10 min</b></span>
-                <p class="text-xs">
-                  Mettre les glaçons à votre goût dans le blender, ajouter le
-                  lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer
-                  jusqu'à avoir la consistence désirée
-                </p>
-              </div>
-            </div>
-          </li>
+        <ul
+          id="box-recipes"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+        >
+          <!-- call api for listing recipes -->
         </ul>
       </main>
     </div>

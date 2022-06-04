@@ -1,0 +1,107 @@
+.filter {
+  height: fit-content;
+  width: fit-content;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  color: white;
+  label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 38px;
+    span {
+      font-weight: bold;
+    }
+    input {
+      background-color: transparent;
+      &::placeholder {
+        color: $color-darkgrey;
+        border: none;
+        line-height: unset;
+      }
+      &:focus {
+        color: $color-clear;
+        outline: none;
+      }
+    }
+    i {
+      padding-top: 2px;
+    }
+  }
+  .listing {
+    max-height: 51vh;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+    }
+    li {
+      width: 33.3333333%;
+    }
+  }
+  &--ingredient {
+    display: flex;
+    flex-direction: column;
+    background-color: $first-dropdown;
+    input::placeholder {
+      background-color: $first-dropdown;
+    }
+    .listing {
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px darken($first-dropdown, 10);
+      }
+      &::-webkit-scrollbar-thumb {
+        background: darken($first-dropdown, 20);
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: darken($first-dropdown, 30);
+      }
+    }
+  }
+  &--appliance {
+    display: flex;
+    flex-direction: column;
+    background-color: $second-dropdown;
+    input::placeholder {
+      background-color: $second-dropdown;
+    }
+    .listing {
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px darken($second-dropdown, 10);
+      }
+      &::-webkit-scrollbar-thumb {
+        background: darken($second-dropdown, 20);
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: darken($second-dropdown, 30);
+      }
+    }
+  }
+  &--ustensil {
+    display: flex;
+    flex-direction: column;
+    background-color: $third-dropdown;
+    input::placeholder {
+      background-color: $third-dropdown;
+    }
+    .listing {
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px darken($third-dropdown, 10);
+      }
+      &::-webkit-scrollbar-thumb {
+        background: darken($third-dropdown, 20);
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: darken($third-dropdown, 30);
+      }
+    }
+  }
+}
