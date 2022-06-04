@@ -1,3 +1,5 @@
+import ApiServices from "../ApiServices/apiServices.js";
+
 let toggleIndex;
 let tagList;
 
@@ -21,13 +23,18 @@ export default class filter {
       listeDOM.classList.add("hidden");
       toggleIndex = false;
     }
-    this.displayAllTag(chevronDOM.id);
+    this.displayAllTag(chevronDOM.id, listeDOM);
   }
 
-  displayAllTag(tag) {
-    console.log(tag);
+  displayAllTag(tag, liste) {
+    let time
+    console.log(liste)
     if (tag === "ingredient-chevron") {
-      console.log("ingredient");
+      time = new ApiServices().getIngredients(); 
+      time.forEach((ingredient) => liste.insertAdjacentHTML(
+        'beforeend',
+        `<li>` + ingredient + `</li>`
+      ))
     } else if (tag === "appliance-chevron") {
       console.log("appliance");
     } else if (tag === "ustensil-chevron") {
