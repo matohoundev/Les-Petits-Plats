@@ -1,15 +1,9 @@
 import ApiServices from "../ApiServices/apiServices.js";
 
 let toggleIndex;
-let tagList;
 
 export default class filter {
-  init(e) {
-    const chevronDOM = e.target;
-    const labelDOM = e.target.parentNode.firstElementChild;
-    const inputDOM = e.target.previousElementSibling;
-    const listeDOM = e.target.parentNode.nextElementSibling;
-
+  style(chevronDOM, labelDOM, listeDOM, inputDOM) {
     if (!toggleIndex) {
       chevronDOM.style.transform = "rotate(180deg)";
       labelDOM.parentNode.firstElementChild.classList.add("hidden");
@@ -23,24 +17,145 @@ export default class filter {
       listeDOM.classList.add("hidden");
       toggleIndex = false;
     }
-    this.displayAllTag(chevronDOM.id, listeDOM);
   }
 
-  displayAllTag(tag, liste) {
-    let time
-    console.log(liste)
+  displayAllTag(tag, liste, input) {
+    let allIngredients;
+    let allAppliance;
+    let allUstensils;
+
     if (tag === "ingredient-chevron") {
-      time = new ApiServices().getIngredients(); 
-      time.forEach((ingredient) => liste.insertAdjacentHTML(
-        'beforeend',
-        `<li>` + ingredient + `</li>`
-      ))
+      liste.replaceChildren();
+      allIngredients = new ApiServices().getIngredients();
+      allIngredients.forEach((ingredient) =>
+        liste.insertAdjacentHTML(
+          "beforeend",
+          `<li class="py-1.5">` + ingredient + `</li>`
+        )
+      );
     } else if (tag === "appliance-chevron") {
-      console.log("appliance");
+      liste.replaceChildren();
+      allAppliance = new ApiServices().getAppliance();
+      allAppliance.forEach((ingredient) =>
+        liste.insertAdjacentHTML(
+          "beforeend",
+          `<li class="py-1.5">` + ingredient + `</li>`
+        )
+      );
     } else if (tag === "ustensil-chevron") {
-      console.log("ustensil");
+      liste.replaceChildren();
+      allUstensils = new ApiServices().getUstensils();
+      allUstensils.forEach((ingredient) =>
+        liste.insertAdjacentHTML(
+          "beforeend",
+          `<li class="py-1.5">` + ingredient + `</li>`
+        )
+      );
     } else {
       return;
+    }
+  }
+
+  inputSearchTag(tag, liste, input) {
+    let allIngredients;
+    let allAppliance;
+    let allUstensils;
+
+    if (tag === "ingredient-chevron") {
+      allIngredients = new ApiServices().getIngredients();
+      input.addEventListener("input", (e) => {
+        const newListeIngredients = new ApiServices().searchTag(
+          e.target.value,
+          allIngredients
+        );
+        if (e.target.value.length > 0) {
+          liste.replaceChildren();
+          newListeIngredients.forEach((ingredient) =>
+            liste.insertAdjacentHTML(
+              "beforeend",
+              `<li class="py-1.5">` + ingredient + `</li>`
+            )
+          );
+        } else {
+          this.displayAllTag(tag, liste, input);
+        }
+      });
+    } else if (tag === "appliance-chevron") {
+      allAppliance = new ApiServices().getAppliance();
+      input.addEventListener("input", (e) => {
+        const newListeAppliance = new ApiServices().searchTag(
+          e.target.value,
+          allAppliance
+        );
+        if (e.target.value.length > 0) {
+          liste.replaceChildren();
+          newListeAppliance.forEach((appliance) =>
+            liste.insertAdjacentHTML(
+              "beforeend",
+              `<li class="py-1.5">` + appliance + `</li>`
+            )
+          );
+        } else {
+          this.displayAllTag(tag, liste, input);
+        }
+      });
+    } else if (tag === "ustensil-chevron") {
+      allUstensils = new ApiServices().getUstensils();
+      input.addEventListener("input", (e) => {
+        const newListeUstensils = new ApiServices().searchTag(
+          e.target.value,
+          allUstensils
+        );
+        if (e.target.value.length > 0) {
+          liste.replaceChildren();
+          newListeUstensils.forEach((ustensil) =>
+            liste.insertAdjacentHTML(
+              "beforeend",
+              `<li class="py-1.5">` + ustensil + `</li>`
+            )
+          );
+        } else {
+          this.displayAllTag(tag, liste, input);
+        }
+      });
+    } else {
+      return;
+    }
+  }
+
+  clickAddTag(
+    tag,
+    liste,
+    onClickTagIngredient,
+    onClickTagAppliance,
+    onClickTagUstensils
+  ) {
+    let allIngredients;
+    let allAppliance;
+    let allUstensils;
+
+    let clickTagIngredient = [];
+    let clickTagAppliance = [];
+    let clickTagUstensils = [];
+
+    if (tag === "ingredient-chevron") {
+      allIngredients = new ApiServices().getIngredients();
+      liste.addEventListener("click", (e) => {
+        clickTagIngredient.push(e.target.textContent);
+        onClickTagIngredient(clickTagIngredient);
+      });
+    } else if (tag === "appliance-chevron") {
+      allAppliance = new ApiServices().getAppliance();
+      liste.addEventListener("click", (e) => {
+        clickTagAppliance.push(e.target.textContent);
+        onClickTagAppliance(clickTagAppliance);
+      });
+    } else if (tag === "ustensil-chevron") {
+      allUstensils = new ApiServices().getUstensils();
+      liste.addEventListener("click", (e) => {
+        clickTagUstensils.push(e.target.textContent);
+        onClickTagUstensils(clickTagUstensils);
+      });
     }
   }
 }

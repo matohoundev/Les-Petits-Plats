@@ -31,28 +31,78 @@ function displayRecipes(recipes) {
   const listRecipes = document.querySelector("#box-recipes");
   const searchBar = document.querySelector("#search-bar");
   const chevron = document.querySelectorAll(".chevron");
+  const researchTag = {
+    ingredient: [],
+    appliance: [],
+    ustensil: [],
+  };
 
-  searchBar.addEventListener("input", (e) => {
-    const newListRecipes = new ApiServices().searchRecipes(e.target.value);
-    if (e.target.value.length > 3) {
-      listRecipes.replaceChildren();
-      newListRecipes.forEach((newRecipe) => {
-        const recipeModel = recipesFactory(newRecipe);
-        const recipeCardDOM = recipeModel.getRecipesCardDOM();
-        listRecipes.appendChild(recipeCardDOM);
-      });
-    } else {
-      recipes.forEach((recipe) => {
-        const recipeModel = recipesFactory(recipe);
-        const recipeCardDOM = recipeModel.getRecipesCardDOM();
-        listRecipes.appendChild(recipeCardDOM);
-      });
-    }
+  // let newListRecipes;
+  let textInSearchBar;
+
+  const test = searchBar.addEventListener("input", (e) => {
+    textInSearchBar = e.target.value;
+    const newListRecipes = new ApiServices().searchRecipes(
+      textInSearchBar,
+      researchTag
+    );
+    // if (e.target.value.length > 3) {
+    listRecipes.replaceChildren();
+    newListRecipes.forEach((newRecipe) => {
+      const recipeModel = recipesFactory(newRecipe);
+      const recipeCardDOM = recipeModel.getRecipesCardDOM();
+      listRecipes.appendChild(recipeCardDOM);
+    });
+    // }
+    // else {
+    //   recipes.forEach((recipe) => {
+    //     const recipeModel = recipesFactory(recipe);
+    //     const recipeCardDOM = recipeModel.getRecipesCardDOM();
+    //     listRecipes.appendChild(recipeCardDOM);
+    //   });
+    // }
   });
 
   for (let i = 0; i < chevron.length; i++) {
     chevron[i].addEventListener("click", (e) => {
-      new filter().init(e);
+      const chevronDOM = e.target;
+      const labelDOM = e.target.parentNode.firstElementChild;
+      const inputDOM = e.target.previousElementSibling;
+      const listeDOM = e.target.parentNode.nextElementSibling;
+
+      new filter().style(chevronDOM, labelDOM, listeDOM, inputDOM);
+      new filter().displayAllTag(chevronDOM.id, listeDOM, inputDOM);
+      new filter().inputSearchTag(chevronDOM.id, listeDOM, inputDOM);
+      new filter().clickAddTag(
+        chevronDOM.id,
+        listeDOM,
+        function TagIngredients(ingredient) {
+          // console.log("ingredient", ingredient);
+          researchTag.ingredient.push(...ingredient);
+          const test = new ApiServices().searchTag(
+            "Limonade",
+            // textInSearchBar,
+            researchTag
+          );
+          console.log("main", test);
+        },
+        function TagAppliance(appliance) {
+          // console.log("appliance", appliance);
+          researchTag.appliance.push(...appliance);
+        },
+        function TagUstensils(ustensil) {
+          // console.log("ustensil", ustensil);
+          researchTag.ustensil.push(...ustensil);
+        }
+      );
+
+      // new ApiServices().searchTag(
+      //   "Limonade",
+      //   // textInSearchBar,
+      //   researchTag
+      // );
+
+      // console.log(testy);
 
       // newListRecipes.forEach((newRecipe) => {
       //   const recipeModel = recipesFactory(newRecipe);
@@ -61,7 +111,6 @@ function displayRecipes(recipes) {
       // });
     });
   }
-
   recipes.forEach((recipe) => {
     const recipeModel = recipesFactory(recipe);
     const recipeCardDOM = recipeModel.getRecipesCardDOM();

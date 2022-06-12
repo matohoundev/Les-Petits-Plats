@@ -11,16 +11,14 @@ export default class ApiServices {
     return allRecipes;
   }
 
-  searchRecipes(value) {
+  searchRecipes(value, tag) {
     const allRecipes = [];
 
     for (let i = 0; i < recipes.length; i++) {
       const allTextInRecipe = [];
-      // allRecipes.push(recipes[i]);
-      // console.log(recipes[i]);
+
       allTextInRecipe.push(recipes[i].name.toLowerCase());
       allTextInRecipe.push(recipes[i].description.toLowerCase());
-
       // faire les ingredients
       for (let o = 0; o < recipes[i].ingredients.length; o++) {
         allTextInRecipe.push(
@@ -36,6 +34,38 @@ export default class ApiServices {
     return allRecipes;
   }
 
+  searchTag(value, tag) {
+    console.log("what");
+    const allRecipes = [];
+    const TagIngredient = tag.ingredient;
+
+    console.log("test", tag.ingredient);
+    console.log("shtqsqd", value);
+    console.log("test2", tag);
+
+    return TagIngredient;
+
+    // for (let index = 0; index < array.length; index++) {
+    //   const element = array[index];
+
+    // }
+
+    // for (let i = 0; i < recipes.length; i++) {
+    //   const allIngredients = [];
+
+    //   // faire les ingredients
+    //   for (let o = 0; o < recipes[i].ingredients.length; o++) {
+    //     allIngredients.push(recipes[i].ingredients[o].ingredient);
+    //   }
+
+    //   if (allIngredients.find((el) => el.includes(tag.ingredient))) {
+    //     allRecipes.push(recipes[i]);
+    //   }
+    // }
+
+    // return allRecipes;
+  }
+
   getIngredients() {
     const ingredients = [];
 
@@ -49,8 +79,25 @@ export default class ApiServices {
       }
     }
 
-    console.log("ingredient", ingredients);
+    ingredients.sort();
+
+    // console.log("ingredient", ingredients);
     return ingredients;
+  }
+
+  searchTag(value, allIngredients) {
+    const TagIngredients = [];
+
+    for (let i = 0; i < allIngredients.length; i++) {
+      const allIngredientsCopy = [];
+
+      allIngredientsCopy.push(allIngredients[i].toLowerCase());
+
+      if (allIngredientsCopy.find((el) => el.includes(value.toLowerCase()))) {
+        TagIngredients.push(allIngredients[i]);
+      }
+    }
+    return TagIngredients;
   }
 
   getAppliance() {
@@ -63,7 +110,8 @@ export default class ApiServices {
       }
     }
 
-    console.log("appliance", appliance);
+    appliance.sort();
+
     return appliance;
   }
 
@@ -72,12 +120,15 @@ export default class ApiServices {
 
     for (let i = 0; i < recipes.length; i++) {
       // on ne récupère pas les doublons
-      if (!ustensils.includes(...recipes[i].ustensils)) {
-        ustensils.push(...recipes[i].ustensils);
+      for (let o = 0; o < recipes[i].ustensils.length; o++) {
+        if (!ustensils.includes(recipes[i].ustensils[o])) {
+          ustensils.push(recipes[i].ustensils[o]);
+        }
       }
     }
 
-    console.log("ustensils", ustensils);
+    ustensils.sort();
+
     return ustensils;
   }
 }
