@@ -34,36 +34,23 @@ export default class ApiServices {
     return allRecipes;
   }
 
-  searchTag(value, tag) {
-    console.log("what");
+  searchTagsForDisplayRecipes(value, tag) {
     const allRecipes = [];
-    const TagIngredient = tag.ingredient;
 
-    console.log("test", tag.ingredient);
-    console.log("shtqsqd", value);
-    console.log("test2", tag);
+    for (let i = 0; i < recipes.length; i++) {
+      const allIngredients = [];
 
-    return TagIngredient;
+      // faire les ingredients
+      for (let o = 0; o < recipes[i].ingredients.length; o++) {
+        allIngredients.push(recipes[i].ingredients[o].ingredient);
+      }
 
-    // for (let index = 0; index < array.length; index++) {
-    //   const element = array[index];
+      if (allIngredients.find((el) => el.includes(tag.ingredient))) {
+        allRecipes.push(recipes[i]);
+      }
+    }
 
-    // }
-
-    // for (let i = 0; i < recipes.length; i++) {
-    //   const allIngredients = [];
-
-    //   // faire les ingredients
-    //   for (let o = 0; o < recipes[i].ingredients.length; o++) {
-    //     allIngredients.push(recipes[i].ingredients[o].ingredient);
-    //   }
-
-    //   if (allIngredients.find((el) => el.includes(tag.ingredient))) {
-    //     allRecipes.push(recipes[i]);
-    //   }
-    // }
-
-    // return allRecipes;
+    return allRecipes;
   }
 
   getIngredients() {

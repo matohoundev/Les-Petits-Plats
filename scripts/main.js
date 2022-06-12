@@ -40,27 +40,26 @@ function displayRecipes(recipes) {
   // let newListRecipes;
   let textInSearchBar;
 
-  const test = searchBar.addEventListener("input", (e) => {
+  searchBar.addEventListener("input", (e) => {
     textInSearchBar = e.target.value;
     const newListRecipes = new ApiServices().searchRecipes(
       textInSearchBar,
       researchTag
     );
-    // if (e.target.value.length > 3) {
-    listRecipes.replaceChildren();
-    newListRecipes.forEach((newRecipe) => {
-      const recipeModel = recipesFactory(newRecipe);
-      const recipeCardDOM = recipeModel.getRecipesCardDOM();
-      listRecipes.appendChild(recipeCardDOM);
-    });
-    // }
-    // else {
-    //   recipes.forEach((recipe) => {
-    //     const recipeModel = recipesFactory(recipe);
-    //     const recipeCardDOM = recipeModel.getRecipesCardDOM();
-    //     listRecipes.appendChild(recipeCardDOM);
-    //   });
-    // }
+    if (e.target.value.length > 3) {
+      listRecipes.replaceChildren();
+      newListRecipes.forEach((newRecipe) => {
+        const recipeModel = recipesFactory(newRecipe);
+        const recipeCardDOM = recipeModel.getRecipesCardDOM();
+        listRecipes.appendChild(recipeCardDOM);
+      });
+    } else {
+      recipes.forEach((recipe) => {
+        const recipeModel = recipesFactory(recipe);
+        const recipeCardDOM = recipeModel.getRecipesCardDOM();
+        listRecipes.appendChild(recipeCardDOM);
+      });
+    }
   });
 
   for (let i = 0; i < chevron.length; i++) {
@@ -79,12 +78,16 @@ function displayRecipes(recipes) {
         function TagIngredients(ingredient) {
           // console.log("ingredient", ingredient);
           researchTag.ingredient.push(...ingredient);
-          const test = new ApiServices().searchTag(
-            "Limonade",
-            // textInSearchBar,
+          const newListRecipes = new ApiServices().searchTagsForDisplayRecipes(
+            textInSearchBar,
             researchTag
           );
-          console.log("main", test);
+          listRecipes.replaceChildren();
+          newListRecipes.forEach((newRecipe) => {
+            const recipeModel = recipesFactory(newRecipe);
+            const recipeCardDOM = recipeModel.getRecipesCardDOM();
+            listRecipes.appendChild(recipeCardDOM);
+          });
         },
         function TagAppliance(appliance) {
           // console.log("appliance", appliance);
@@ -95,14 +98,6 @@ function displayRecipes(recipes) {
           researchTag.ustensil.push(...ustensil);
         }
       );
-
-      // new ApiServices().searchTag(
-      //   "Limonade",
-      //   // textInSearchBar,
-      //   researchTag
-      // );
-
-      // console.log(testy);
 
       // newListRecipes.forEach((newRecipe) => {
       //   const recipeModel = recipesFactory(newRecipe);
