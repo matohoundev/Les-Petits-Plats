@@ -31,12 +31,14 @@ function displayRecipes(recipes) {
   const listRecipes = document.querySelector("#box-recipes");
   const searchBar = document.querySelector("#search-bar");
   const chevron = document.querySelectorAll(".chevron");
+  let boxTag = document.querySelector('#tag-select');
+
   const researchTag = {
     ingredient: [],
     appliance: [],
     ustensil: [],
   };
-
+  
   // let newListRecipes;
   let textInSearchBar;
 
@@ -98,7 +100,7 @@ function displayRecipes(recipes) {
           researchTag.ustensil.push(...ustensil);
         }
       );
-      new filter().styleAddTag(researchTag);
+      new filter().styleAddTag(researchTag, boxTag);
 
       // newListRecipes.forEach((newRecipe) => {
       //   const recipeModel = recipesFactory(newRecipe);
@@ -107,6 +109,12 @@ function displayRecipes(recipes) {
       // });
     });
   }
+
+  boxTag.addEventListener('click', (e) => {
+    new filter().deleteTag(researchTag, e);
+  })
+  
+
   recipes.forEach((recipe) => {
     const recipeModel = recipesFactory(recipe);
     const recipeCardDOM = recipeModel.getRecipesCardDOM();
