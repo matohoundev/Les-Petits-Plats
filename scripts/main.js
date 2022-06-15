@@ -98,6 +98,7 @@ function displayRecipes(recipes) {
           researchTag.ustensil.push(...ustensil);
         }
       );
+      new filter().styleAddTag(researchTag);
 
       // newListRecipes.forEach((newRecipe) => {
       //   const recipeModel = recipesFactory(newRecipe);

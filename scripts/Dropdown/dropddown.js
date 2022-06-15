@@ -158,4 +158,56 @@ export default class filter {
       });
     }
   }
+
+  styleAddTag(researchTag) {
+    let boxTag = document.querySelector("#tag-select");
+
+    if (
+      researchTag.ingredient.length === 0 &&
+      researchTag.appliance.length === 0 &&
+      researchTag.ustensil.length === 0
+    ) {
+      boxTag.classList.remove("mt-5");
+    } else {
+      boxTag.classList.add("mt-5");
+    }
+
+    if (researchTag.ingredient.length > 0) {
+      for (let i = 0; i < researchTag.ingredient.length; i++) {
+        boxTag.insertAdjacentHTML(
+          "beforeend",
+          `<span class="tag tag-ingredient">` +
+            researchTag.ingredient[i] +
+            `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
+          ></span>`
+        );
+      }
+    }
+    if (researchTag.appliance.length > 0) {
+      for (let i = 0; i < researchTag.appliance.length; i++) {
+        boxTag.insertAdjacentHTML(
+          "beforeend",
+          `<span class="tag tag-appliance">` +
+            researchTag.appliance[i] +
+            `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
+          ></span>`
+        );
+      }
+    }
+    if (researchTag.ustensil.length > 0) {
+      for (let i = 0; i < researchTag.ustensil.length; i++) {
+        boxTag.insertAdjacentHTML(
+          "beforeend",
+          `<span class="tag tag-ustensil">` +
+            researchTag.ustensil[i] +
+            `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
+          ></span>`
+        );
+      }
+    }
+  }
+
+  // deleteTag() {
+
+  // }
 }
