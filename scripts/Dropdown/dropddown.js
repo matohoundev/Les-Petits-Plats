@@ -126,6 +126,9 @@ export default class filter {
   clickAddTag(
     tag,
     liste,
+    researchTagIngredients,
+    researchTagAppliance,
+    researchTagUstensils,
     onClickTagIngredient,
     onClickTagAppliance,
     onClickTagUstensils
@@ -134,70 +137,71 @@ export default class filter {
     let allAppliance;
     let allUstensils;
 
-    let clickTagIngredient = [];
-    let clickTagAppliance = [];
-    let clickTagUstensils = [];
-
     if (tag === "ingredient-chevron") {
       allIngredients = new ApiServices().getIngredients();
       liste.addEventListener("click", (e) => {
-        clickTagIngredient.push(e.target.textContent);
-        onClickTagIngredient(clickTagIngredient);
+        if (!researchTagIngredients.includes(e.target.textContent)) {
+          onClickTagIngredient(e.target.textContent);
+        }
       });
     } else if (tag === "appliance-chevron") {
       allAppliance = new ApiServices().getAppliance();
       liste.addEventListener("click", (e) => {
-        clickTagAppliance.push(e.target.textContent);
-        onClickTagAppliance(clickTagAppliance);
+        onClickTagAppliance(e.target.textContent);
       });
     } else if (tag === "ustensil-chevron") {
       allUstensils = new ApiServices().getUstensils();
       liste.addEventListener("click", (e) => {
-        clickTagUstensils.push(e.target.textContent);
-        onClickTagUstensils(clickTagUstensils);
+        onClickTagUstensils(e.target.textContent);
       });
     }
   }
 
-  styleAddTag(researchTag, boxtag) {
+  styleAddTag(
+    researchTagIngredients,
+    researchTagAppliance,
+    researchTagUstensils,
+    newTag,
+    boxtag
+  ) {
     if (
-      researchTag.ingredient.length === 0 &&
-      researchTag.appliance.length === 0 &&
-      researchTag.ustensil.length === 0
+      researchTagIngredients.length === 0 &&
+      researchTagAppliance.length === 0 &&
+      researchTagUstensils.length === 0
     ) {
       boxtag.classList.remove("mt-5");
     } else {
       boxtag.classList.add("mt-5");
     }
 
-    if (researchTag.ingredient.length > 0) {
-      for (let i = 0; i < researchTag.ingredient.length; i++) {
+    if (researchTagIngredients.length > 0) {
+      for (let i = 0; i < researchTagIngredients.length; i++) {
         boxtag.insertAdjacentHTML(
           "beforeend",
           `<span class="tag tag-ingredient">` +
-            researchTag.ingredient[i] +
+            researchTagIngredients[i] +
             `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
-          ></span>`
+            ></span>`
         );
       }
     }
-    if (researchTag.appliance.length > 0) {
-      for (let i = 0; i < researchTag.appliance.length; i++) {
+    if (researchTagAppliance.length > 0) {
+      for (let i = 0; i < researchTagAppliance.length; i++) {
         boxtag.insertAdjacentHTML(
           "beforeend",
           `<span class="tag tag-appliance">` +
-            researchTag.appliance[i] +
+            researchTagAppliance[i] +
             `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
           ></span>`
         );
       }
     }
-    if (researchTag.ustensil.length > 0) {
-      for (let i = 0; i < researchTag.ustensil.length; i++) {
+    if (researchTagUstensils.length > 0) {
+      for (let i = 0; i < researchTagUstensils.length; i++) {
         boxtag.insertAdjacentHTML(
           "beforeend",
           `<span class="tag tag-ustensil">` +
-            researchTag.ustensil[i] +
+            researchTagUstensils[i] +
             `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
           ></span>`
         );
@@ -205,7 +209,51 @@ export default class filter {
     }
   }
 
-  deleteTag(researchTag, e) {
-    console.log('test');
+  deleteTag(e, researchTag) {
+    const tagSelect = e.target.localName;
+    let tagDelete = "";
+    console.log("what", researchTag);
+    if (tagSelect === "span") {
+      tagDelete = e.target.textContent;
+      for (let i = 0; i < researchTag.ingredient.length; i++) {
+        const ingredient = researchTag.ingredient[i];
+        if (ingredient === tagDelete) {
+          researchTag.ingredient.pop();
+        }
+      }
+      for (let i = 0; i < researchTag.appliance.length; i++) {
+        const appliance = researchTag.appliance[i];
+        if (appliance === tagDelete) {
+          researchTag.appliance.pop();
+        }
+      }
+      for (let i = 0; i < researchTag.ustensil.length; i++) {
+        const ustensil = researchTag.ustensil[i];
+        if (ustensil === tagDelete) {
+          researchTag.ustensil.pop();
+        }
+      }
+    } else if (tagSelect === "i") {
+      tagDelete = e.target.parentElement.textContent;
+      for (let i = 0; i < researchTag.ingredient.length; i++) {
+        const ingredient = researchTag.ingredient[i];
+        if (ingredient === tagDelete) {
+          researchTag.ingredient.pop();
+        }
+      }
+      for (let i = 0; i < researchTag.appliance.length; i++) {
+        const appliance = researchTag.appliance[i];
+        if (appliance === tagDelete) {
+          researchTag.appliance.pop();
+        }
+      }
+      for (let i = 0; i < researchTag.ustensil.length; i++) {
+        const ustensil = researchTag.ustensil[i];
+        if (ustensil === tagDelete) {
+          researchTag.ustensil.pop();
+        }
+      }
+    }
+    console.log("whatFIn", researchTag);
   }
 }

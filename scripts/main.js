@@ -31,14 +31,13 @@ function displayRecipes(recipes) {
   const listRecipes = document.querySelector("#box-recipes");
   const searchBar = document.querySelector("#search-bar");
   const chevron = document.querySelectorAll(".chevron");
-  let boxTag = document.querySelector('#tag-select');
+  let boxTag = document.querySelector("#tag-select");
 
   const researchTag = {
     ingredient: [],
     appliance: [],
     ustensil: [],
   };
-  
   // let newListRecipes;
   let textInSearchBar;
 
@@ -77,12 +76,21 @@ function displayRecipes(recipes) {
       new filter().clickAddTag(
         chevronDOM.id,
         listeDOM,
+        researchTag.ingredient,
+        researchTag.appliance,
+        researchTag.ustensil,
         function TagIngredients(ingredient) {
-          // console.log("ingredient", ingredient);
-          researchTag.ingredient.push(...ingredient);
+          researchTag.ingredient.push(ingredient);
           const newListRecipes = new ApiServices().searchTagsForDisplayRecipes(
             textInSearchBar,
             researchTag
+          );
+          new filter().styleAddTag(
+            researchTag.ingredient,
+            researchTag.appliance,
+            researchTag.ustensil,
+            ingredient,
+            boxTag
           );
           listRecipes.replaceChildren();
           newListRecipes.forEach((newRecipe) => {
@@ -100,8 +108,14 @@ function displayRecipes(recipes) {
           researchTag.ustensil.push(...ustensil);
         }
       );
-      new filter().styleAddTag(researchTag, boxTag);
 
+      // new filter().styleAddTag(
+      //   researchTag.ingredient,
+      //   researchTag.appliance,
+      //   researchTag.ustensil,
+      //   boxTag
+      // );
+      console.log("researchTag", researchTag);
       // newListRecipes.forEach((newRecipe) => {
       //   const recipeModel = recipesFactory(newRecipe);
       //   const recipeCardDOM = recipeModel.getRecipesCardDOM();
@@ -110,10 +124,9 @@ function displayRecipes(recipes) {
     });
   }
 
-  boxTag.addEventListener('click', (e) => {
-    new filter().deleteTag(researchTag, e);
-  })
-  
+  boxTag.addEventListener("click", (e) => {
+    new filter().deleteTag(e, researchTag);
+  });
 
   recipes.forEach((recipe) => {
     const recipeModel = recipesFactory(recipe);
