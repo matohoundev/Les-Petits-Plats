@@ -162,75 +162,68 @@ export default class filter {
     researchTagAppliance,
     researchTagUstensils,
     newTag,
-    boxtag
+    boxTag
   ) {
     if (
-      researchTagIngredients.length === 0 &&
-      researchTagAppliance.length === 0 &&
-      researchTagUstensils.length === 0
+      researchTagIngredients.length > 0 ||
+      researchTagAppliance.length > 0 ||
+      researchTagUstensils.length > 0
     ) {
-      boxtag.classList.remove("mt-5");
-    } else {
-      boxtag.classList.add("mt-5");
+      boxTag.classList.add("mt-5");
     }
 
     if (researchTagIngredients.length > 0) {
-      for (let i = 0; i < researchTagIngredients.length; i++) {
-        boxtag.insertAdjacentHTML(
-          "beforeend",
-          `<span class="tag tag-ingredient">` +
-            researchTagIngredients[i] +
-            `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
+      boxTag.insertAdjacentHTML(
+        "beforeend",
+        `<span class="tag tag-ingredient">` +
+          newTag +
+          `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
             ></span>`
-        );
-      }
+      );
     }
     if (researchTagAppliance.length > 0) {
-      for (let i = 0; i < researchTagAppliance.length; i++) {
-        boxtag.insertAdjacentHTML(
-          "beforeend",
-          `<span class="tag tag-appliance">` +
-            researchTagAppliance[i] +
-            `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
+      boxTag.insertAdjacentHTML(
+        "beforeend",
+        `<span class="tag tag-appliance">` +
+          researchTagAppliance[i] +
+          `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
           ></span>`
-        );
-      }
+      );
     }
     if (researchTagUstensils.length > 0) {
-      for (let i = 0; i < researchTagUstensils.length; i++) {
-        boxtag.insertAdjacentHTML(
-          "beforeend",
-          `<span class="tag tag-ustensil">` +
-            researchTagUstensils[i] +
-            `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
+      boxTag.insertAdjacentHTML(
+        "beforeend",
+        `<span class="tag tag-ustensil">` +
+          researchTagUstensils[i] +
+          `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
           ></span>`
-        );
-      }
+      );
     }
   }
 
-  deleteTag(e, researchTag) {
+  deleteTag(e, boxTag, researchTag) {
     const tagSelect = e.target.localName;
     let tagDelete = "";
-    console.log("what", researchTag);
+    console.log(e.target);
     if (tagSelect === "span") {
       tagDelete = e.target.textContent;
       for (let i = 0; i < researchTag.ingredient.length; i++) {
         const ingredient = researchTag.ingredient[i];
         if (ingredient === tagDelete) {
-          researchTag.ingredient.pop();
+          researchTag.ingredient.splice(i, 1);
+          e.target.remove();
         }
       }
       for (let i = 0; i < researchTag.appliance.length; i++) {
         const appliance = researchTag.appliance[i];
         if (appliance === tagDelete) {
-          researchTag.appliance.pop();
+          researchTag.appliance.splice(i, 1);
         }
       }
       for (let i = 0; i < researchTag.ustensil.length; i++) {
         const ustensil = researchTag.ustensil[i];
         if (ustensil === tagDelete) {
-          researchTag.ustensil.pop();
+          researchTag.ustensil.splice(i, 1);
         }
       }
     } else if (tagSelect === "i") {
@@ -238,22 +231,28 @@ export default class filter {
       for (let i = 0; i < researchTag.ingredient.length; i++) {
         const ingredient = researchTag.ingredient[i];
         if (ingredient === tagDelete) {
-          researchTag.ingredient.pop();
+          researchTag.ingredient.splice(i, 1);
         }
       }
       for (let i = 0; i < researchTag.appliance.length; i++) {
         const appliance = researchTag.appliance[i];
         if (appliance === tagDelete) {
-          researchTag.appliance.pop();
+          researchTag.appliance.splice(i, 1);
         }
       }
       for (let i = 0; i < researchTag.ustensil.length; i++) {
         const ustensil = researchTag.ustensil[i];
         if (ustensil === tagDelete) {
-          researchTag.ustensil.pop();
+          researchTag.ustensil.splice(i, 1);
         }
       }
     }
-    console.log("whatFIn", researchTag);
+    if (
+      researchTag.ingredient.length === 0 &&
+      researchTag.appliance.length === 0 &&
+      researchTag.ustensil.length === 0
+    ) {
+      boxTag.classList.remove("mt-5");
+    }
   }
 }

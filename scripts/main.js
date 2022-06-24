@@ -108,24 +108,21 @@ function displayRecipes(recipes) {
           researchTag.ustensil.push(...ustensil);
         }
       );
-
-      // new filter().styleAddTag(
-      //   researchTag.ingredient,
-      //   researchTag.appliance,
-      //   researchTag.ustensil,
-      //   boxTag
-      // );
-      console.log("researchTag", researchTag);
-      // newListRecipes.forEach((newRecipe) => {
-      //   const recipeModel = recipesFactory(newRecipe);
-      //   const recipeCardDOM = recipeModel.getRecipesCardDOM();
-      //   listRecipes.appendChild(recipeCardDOM);
-      // });
     });
   }
 
   boxTag.addEventListener("click", (e) => {
-    new filter().deleteTag(e, researchTag);
+    new filter().deleteTag(e, boxTag, researchTag);
+    const updateListRecipes = new ApiServices().searchTagsForDisplayRecipes(
+      textInSearchBar,
+      researchTag
+    );
+    listRecipes.replaceChildren();
+    updateListRecipes.forEach((newRecipe) => {
+      const recipeModel = recipesFactory(newRecipe);
+      const recipeCardDOM = recipeModel.getRecipesCardDOM();
+      listRecipes.appendChild(recipeCardDOM);
+    });
   });
 
   recipes.forEach((recipe) => {
