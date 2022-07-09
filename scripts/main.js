@@ -39,21 +39,12 @@ function displayRecipes(recipes) {
       textInSearchBar,
       researchTag
     );
-    if (e.target.value.length > 3) {
-      listRecipes.replaceChildren();
-      newListRecipes.forEach((newRecipe) => {
-        const recipeModel = recipesFactory(newRecipe);
-        const recipeCardDOM = recipeModel.getRecipesCardDOM();
-        listRecipes.appendChild(recipeCardDOM);
-      });
-    } else {
-      listRecipes.replaceChildren();
-      newListRecipes.forEach((newRecipe) => {
-        const recipeModel = recipesFactory(newRecipe);
-        const recipeCardDOM = recipeModel.getRecipesCardDOM();
-        listRecipes.appendChild(recipeCardDOM);
-      });
-    }
+    listRecipes.replaceChildren();
+    newListRecipes.forEach((newRecipe) => {
+      const recipeModel = recipesFactory(newRecipe);
+      const recipeCardDOM = recipeModel.getRecipesCardDOM();
+      listRecipes.appendChild(recipeCardDOM);
+    });
     if (newListRecipes.length === 0) {
       nothingResearch.style.display = "block";
     } else {
@@ -168,7 +159,7 @@ function displayRecipes(recipes) {
       const recipeCardDOM = recipeModel.getRecipesCardDOM();
       listRecipes.appendChild(recipeCardDOM);
     });
-    if (newListRecipes.length === 0) {
+    if (updateListRecipes.length === 0) {
       nothingResearch.style.display = "block";
     } else {
       nothingResearch.style.display = "none";

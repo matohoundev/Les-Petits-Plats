@@ -8,7 +8,7 @@ export default class ApiServices {
   searchRecipes(searchValue, tags) {
     let searchRecipes = recipes;
 
-    if (searchValue) {
+    if (searchValue.length >= 3) {
       searchRecipes = recipes.filter(
         (r) =>
           r.name.toLowerCase().includes(searchValue.toLowerCase()) ||
