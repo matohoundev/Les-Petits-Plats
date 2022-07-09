@@ -19,7 +19,7 @@ export default class filter {
     }
   }
 
-  displayAllTag(tag, liste, input) {
+  displayAllTag(tag, liste) {
     let allIngredients;
     let allAppliance;
     let allUstensils;
@@ -147,17 +147,21 @@ export default class filter {
     } else if (tag === "appliance-chevron") {
       allAppliance = new ApiServices().getAppliance();
       liste.addEventListener("click", (e) => {
-        onClickTagAppliance(e.target.textContent);
+        if (!researchTagAppliance.includes(e.target.textContent)) {
+          onClickTagAppliance(e.target.textContent);
+        }
       });
     } else if (tag === "ustensil-chevron") {
       allUstensils = new ApiServices().getUstensils();
       liste.addEventListener("click", (e) => {
-        onClickTagUstensils(e.target.textContent);
+        if (!researchTagUstensils.includes(e.target.textContent)) {
+          onClickTagUstensils(e.target.textContent);
+        }
       });
     }
   }
 
-  styleAddTag(
+  styleAddTagIngredients(
     researchTagIngredients,
     researchTagAppliance,
     researchTagUstensils,
@@ -166,7 +170,7 @@ export default class filter {
   ) {
     if (
       researchTagIngredients.length > 0 ||
-      researchTagAppliance.length > 0 ||
+      researchTagAppliance != "" ||
       researchTagUstensils.length > 0
     ) {
       boxTag.classList.add("mt-5");
@@ -181,20 +185,66 @@ export default class filter {
             ></span>`
       );
     }
-    if (researchTagAppliance.length > 0) {
-      boxTag.insertAdjacentHTML(
-        "beforeend",
-        `<span class="tag tag-appliance">` +
-          researchTagAppliance[i] +
-          `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
-          ></span>`
-      );
+  }
+
+  styleAddTagAppliance(
+    researchTagIngredients,
+    researchTagAppliance,
+    researchTagUstensils,
+    newTag,
+    boxTag
+  ) {
+    if (
+      researchTagIngredients.length > 0 ||
+      researchTagAppliance != "" ||
+      researchTagUstensils.length > 0
+    ) {
+      boxTag.classList.add("mt-5");
     }
+
+    if (researchTagAppliance != "") {
+      if (document.getElementById("tag-appliance") === null) {
+        boxTag.insertAdjacentHTML(
+          "beforeend",
+          `<span id="tag-appliance" class="tag tag-appliance">` +
+            newTag +
+            `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
+            ></span>`
+        );
+      } else {
+        let tagAppliance = document.getElementById("tag-appliance");
+        tagAppliance.remove();
+        boxTag.insertAdjacentHTML(
+          "beforeend",
+          `<span id="tag-appliance" class="tag tag-appliance">` +
+            newTag +
+            `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
+            ></span>`
+        );
+      }
+    }
+  }
+
+  styleAddTagUstensils(
+    researchTagIngredients,
+    researchTagAppliance,
+    researchTagUstensils,
+    newTag,
+    boxTag
+  ) {
+    if (
+      researchTagIngredients.length > 0 ||
+      researchTagAppliance != "" ||
+      researchTagUstensils.length > 0
+    ) {
+      boxTag.classList.add("mt-5");
+    }
+
     if (researchTagUstensils.length > 0) {
       boxTag.insertAdjacentHTML(
         "beforeend",
         `<span class="tag tag-ustensil">` +
-          researchTagUstensils[i] +
+          newTag +
           `<i class="fas fa-times border-2 rounded-xl pr-1 pl-1"></i
           ></span>`
       );
@@ -204,7 +254,6 @@ export default class filter {
   deleteTag(e, boxTag, researchTag) {
     const tagSelect = e.target.localName;
     let tagDelete = "";
-    console.log(e.target);
     if (tagSelect === "span") {
       tagDelete = e.target.textContent;
       for (let i = 0; i < researchTag.ingredient.length; i++) {
@@ -214,16 +263,15 @@ export default class filter {
           e.target.remove();
         }
       }
-      for (let i = 0; i < researchTag.appliance.length; i++) {
-        const appliance = researchTag.appliance[i];
-        if (appliance === tagDelete) {
-          researchTag.appliance.splice(i, 1);
-        }
+      if (researchTag.appliance === tagDelete) {
+        researchTag.appliance = "";
+        e.target.remove();
       }
       for (let i = 0; i < researchTag.ustensil.length; i++) {
         const ustensil = researchTag.ustensil[i];
         if (ustensil === tagDelete) {
           researchTag.ustensil.splice(i, 1);
+          e.target.remove();
         }
       }
     } else if (tagSelect === "i") {
@@ -232,18 +280,18 @@ export default class filter {
         const ingredient = researchTag.ingredient[i];
         if (ingredient === tagDelete) {
           researchTag.ingredient.splice(i, 1);
+          e.target.parentElement.remove();
         }
       }
-      for (let i = 0; i < researchTag.appliance.length; i++) {
-        const appliance = researchTag.appliance[i];
-        if (appliance === tagDelete) {
-          researchTag.appliance.splice(i, 1);
-        }
+      if (researchTag.appliance === tagDelete) {
+        researchTag.appliance = "";
+        e.target.parentElement.remove();
       }
       for (let i = 0; i < researchTag.ustensil.length; i++) {
         const ustensil = researchTag.ustensil[i];
         if (ustensil === tagDelete) {
           researchTag.ustensil.splice(i, 1);
+          e.target.parentElement.remove();
         }
       }
     }

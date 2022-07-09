@@ -2,55 +2,55 @@ import { recipes } from "../../data/recipes.js";
 
 export default class ApiServices {
   getRecipes() {
-    const allRecipes = [];
-
-    for (let i = 0; i < recipes.length; i++) {
-      allRecipes.push(recipes[i]);
-    }
-
-    return allRecipes;
+    return recipes;
   }
 
-  searchRecipes(value, tag) {
-    const allRecipes = [];
+  searchRecipes(searchValue, tags) {
+    let searchRecipes = recipes;
 
-    for (let i = 0; i < recipes.length; i++) {
-      const allTextInRecipe = [];
-
-      allTextInRecipe.push(recipes[i].name.toLowerCase());
-      allTextInRecipe.push(recipes[i].description.toLowerCase());
-      // faire les ingredients
-      for (let o = 0; o < recipes[i].ingredients.length; o++) {
-        allTextInRecipe.push(
-          recipes[i].ingredients[o].ingredient.toLowerCase()
-        );
-      }
-
-      if (allTextInRecipe.find((el) => el.includes(value.toLowerCase()))) {
-        allRecipes.push(recipes[i]);
-      }
+    if (searchValue) {
+      searchRecipes = recipes.filter(
+        (r) =>
+          r.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          r.description.toLowerCase().includes(searchValue.toLowerCase()) ||
+          r.ingredients.some((i) =>
+            i.ingredient.toLowerCase().includes(searchValue.toLowerCase())
+          )
+      );
     }
 
-    return allRecipes;
+    if (tags.appliance) {
+      searchRecipes = searchRecipes.filter((r) =>
+        r.appliance.includes(tags.appliance)
+      );
+    }
+    if (tags.ingredient) {
+      searchRecipes = searchRecipes.filter((r) =>
+        r.ingredients.some((i) => i.ingredient.includes(tags.ingredient))
+      );
+    }
+    if (tags.ustensil) {
+      searchRecipes = searchRecipes.filter((r) =>
+        r.ustensils.some((i) => i.includes(tags.ustensil))
+      );
+    }
+
+    return searchRecipes;
   }
 
-  searchTagsForDisplayRecipes(value, tag) {
-    const allRecipes = [];
+  searchTag(value, allTags) {
+    const TagList = [];
 
-    for (let i = 0; i < recipes.length; i++) {
-      const allIngredients = [];
+    for (let i = 0; i < allTags.length; i++) {
+      const allTagsCopy = [];
 
-      // faire les ingredients
-      for (let o = 0; o < recipes[i].ingredients.length; o++) {
-        allIngredients.push(recipes[i].ingredients[o].ingredient);
-      }
+      allTagsCopy.push(allTags[i].toLowerCase());
 
-      if (allIngredients.find((el) => el.includes(tag.ingredient))) {
-        allRecipes.push(recipes[i]);
+      if (allTagsCopy.find((el) => el.includes(value.toLowerCase()))) {
+        TagList.push(allTags[i]);
       }
     }
-
-    return allRecipes;
+    return TagList;
   }
 
   getIngredients() {
@@ -58,10 +58,10 @@ export default class ApiServices {
 
     for (let i = 0; i < recipes.length; i++) {
       // on ne récupère pas les doublons
-      let allIngredients = [...recipes[i].ingredients];
-      for (let o = 0; o < allIngredients.length; o++) {
-        if (!ingredients.includes(allIngredients[o].ingredient)) {
-          ingredients.push(allIngredients[o].ingredient);
+      let RecupIngredients = [...recipes[i].ingredients];
+      for (let o = 0; o < RecupIngredients.length; o++) {
+        if (!ingredients.includes(RecupIngredients[o].ingredient)) {
+          ingredients.push(RecupIngredients[o].ingredient);
         }
       }
     }
@@ -70,21 +70,6 @@ export default class ApiServices {
 
     // console.log("ingredient", ingredients);
     return ingredients;
-  }
-
-  searchTag(value, allIngredients) {
-    const TagIngredients = [];
-
-    for (let i = 0; i < allIngredients.length; i++) {
-      const allIngredientsCopy = [];
-
-      allIngredientsCopy.push(allIngredients[i].toLowerCase());
-
-      if (allIngredientsCopy.find((el) => el.includes(value.toLowerCase()))) {
-        TagIngredients.push(allIngredients[i]);
-      }
-    }
-    return TagIngredients;
   }
 
   getAppliance() {

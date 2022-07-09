@@ -3,14 +3,11 @@
 import ApiServices from "./ApiServices/apiServices.js";
 import filter from "./Dropdown/dropddown.js";
 import recipesFactory from "./Factory/RecipesFactory.js";
-// import { recipesFactory } from "./Factory/RecipesFactory.js";
 
 (function init() {
   // new ApiServices().getAppliance();
   // new ApiServices().getIngredients();
   const AllRecipes = new ApiServices().getRecipes();
-
-  // displayRecipes(AllRecipes);
 
   Promise.all(AllRecipes)
     .then((AllRecipes) => {
@@ -21,21 +18,16 @@ import recipesFactory from "./Factory/RecipesFactory.js";
     });
 })();
 
-// display recipes CHECK
-
-// factory template CHECK
-
-// search
-
 function displayRecipes(recipes) {
   const listRecipes = document.querySelector("#box-recipes");
   const searchBar = document.querySelector("#search-bar");
   const chevron = document.querySelectorAll(".chevron");
   let boxTag = document.querySelector("#tag-select");
+  let nothingResearch = document.querySelector("#nothing-in-research");
 
   const researchTag = {
     ingredient: [],
-    appliance: [],
+    appliance: "",
     ustensil: [],
   };
   // let newListRecipes;
@@ -55,11 +47,17 @@ function displayRecipes(recipes) {
         listRecipes.appendChild(recipeCardDOM);
       });
     } else {
-      recipes.forEach((recipe) => {
-        const recipeModel = recipesFactory(recipe);
+      listRecipes.replaceChildren();
+      newListRecipes.forEach((newRecipe) => {
+        const recipeModel = recipesFactory(newRecipe);
         const recipeCardDOM = recipeModel.getRecipesCardDOM();
         listRecipes.appendChild(recipeCardDOM);
       });
+    }
+    if (newListRecipes.length === 0) {
+      nothingResearch.style.display = "block";
+    } else {
+      nothingResearch.style.display = "none";
     }
   });
 
@@ -71,7 +69,7 @@ function displayRecipes(recipes) {
       const listeDOM = e.target.parentNode.nextElementSibling;
 
       new filter().style(chevronDOM, labelDOM, listeDOM, inputDOM);
-      new filter().displayAllTag(chevronDOM.id, listeDOM, inputDOM);
+      new filter().displayAllTag(chevronDOM.id, listeDOM);
       new filter().inputSearchTag(chevronDOM.id, listeDOM, inputDOM);
       new filter().clickAddTag(
         chevronDOM.id,
@@ -81,11 +79,11 @@ function displayRecipes(recipes) {
         researchTag.ustensil,
         function TagIngredients(ingredient) {
           researchTag.ingredient.push(ingredient);
-          const newListRecipes = new ApiServices().searchTagsForDisplayRecipes(
+          const newListRecipes = new ApiServices().searchRecipes(
             textInSearchBar,
             researchTag
           );
-          new filter().styleAddTag(
+          new filter().styleAddTagIngredients(
             researchTag.ingredient,
             researchTag.appliance,
             researchTag.ustensil,
@@ -98,14 +96,61 @@ function displayRecipes(recipes) {
             const recipeCardDOM = recipeModel.getRecipesCardDOM();
             listRecipes.appendChild(recipeCardDOM);
           });
+          if (newListRecipes.length === 0) {
+            nothingResearch.style.display = "block";
+          } else {
+            nothingResearch.style.display = "none";
+          }
         },
         function TagAppliance(appliance) {
-          // console.log("appliance", appliance);
-          researchTag.appliance.push(...appliance);
+          researchTag.appliance = appliance;
+          const newListRecipes = new ApiServices().searchRecipes(
+            textInSearchBar,
+            researchTag
+          );
+          new filter().styleAddTagAppliance(
+            researchTag.ingredient,
+            researchTag.appliance,
+            researchTag.ustensil,
+            appliance,
+            boxTag
+          );
+          listRecipes.replaceChildren();
+          newListRecipes.forEach((newRecipe) => {
+            const recipeModel = recipesFactory(newRecipe);
+            const recipeCardDOM = recipeModel.getRecipesCardDOM();
+            listRecipes.appendChild(recipeCardDOM);
+          });
+          if (newListRecipes.length === 0) {
+            nothingResearch.style.display = "block";
+          } else {
+            nothingResearch.style.display = "none";
+          }
         },
         function TagUstensils(ustensil) {
-          // console.log("ustensil", ustensil);
-          researchTag.ustensil.push(...ustensil);
+          researchTag.ustensil.push(ustensil);
+          const newListRecipes = new ApiServices().searchRecipes(
+            textInSearchBar,
+            researchTag
+          );
+          new filter().styleAddTagUstensils(
+            researchTag.ingredient,
+            researchTag.appliance,
+            researchTag.ustensil,
+            ustensil,
+            boxTag
+          );
+          listRecipes.replaceChildren();
+          newListRecipes.forEach((newRecipe) => {
+            const recipeModel = recipesFactory(newRecipe);
+            const recipeCardDOM = recipeModel.getRecipesCardDOM();
+            listRecipes.appendChild(recipeCardDOM);
+          });
+          if (newListRecipes.length === 0) {
+            nothingResearch.style.display = "block";
+          } else {
+            nothingResearch.style.display = "none";
+          }
         }
       );
     });
@@ -113,7 +158,7 @@ function displayRecipes(recipes) {
 
   boxTag.addEventListener("click", (e) => {
     new filter().deleteTag(e, boxTag, researchTag);
-    const updateListRecipes = new ApiServices().searchTagsForDisplayRecipes(
+    const updateListRecipes = new ApiServices().searchRecipes(
       textInSearchBar,
       researchTag
     );
@@ -123,6 +168,11 @@ function displayRecipes(recipes) {
       const recipeCardDOM = recipeModel.getRecipesCardDOM();
       listRecipes.appendChild(recipeCardDOM);
     });
+    if (newListRecipes.length === 0) {
+      nothingResearch.style.display = "block";
+    } else {
+      nothingResearch.style.display = "none";
+    }
   });
 
   recipes.forEach((recipe) => {

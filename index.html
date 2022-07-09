@@ -15,7 +15,7 @@
     <script type="module" src="scripts/main.js"></script>
   </head>
   <body>
-    <div class="mx-auto py-10 max-w-screen-xl p-4 lg:p-0">
+    <div class="mx-auto py-10 max-w-screen-xl mt-10 p-4 lg:p-0">
       <header class="flex justify-center">
         <img src="./assets/logo/logo.svg" alt="logo du site les petits plats" />
       </header>
@@ -97,6 +97,12 @@
         </div>
       </nav>
       <main class="mt-5">
+        <div id="nothing-in-research" class="flex justify-center hidden">
+          <p class="text-xl">
+            Aucune recette ne correspond à votre critère… vous pouvez chercher «
+            tarte aux pommes », « poisson », etc.
+          </p>
+        </div>
         <ul
           id="box-recipes"
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
