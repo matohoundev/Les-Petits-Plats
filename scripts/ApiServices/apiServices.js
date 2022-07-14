@@ -8,7 +8,7 @@ export default class ApiServices {
   searchRecipes(searchValue, tags) {
     let searchRecipes = recipes;
 
-    if (searchValue.length >= 3) {
+    if (searchValue && searchValue.length >= 3) {
       searchRecipes = recipes.filter(
         (r) =>
           r.name.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -38,7 +38,7 @@ export default class ApiServices {
     return searchRecipes;
   }
 
-  searchTag(value, allTags) {
+  searchTag(textValue, allTags) {
     const TagList = [];
 
     for (let i = 0; i < allTags.length; i++) {
@@ -46,7 +46,7 @@ export default class ApiServices {
 
       allTagsCopy.push(allTags[i].toLowerCase());
 
-      if (allTagsCopy.find((el) => el.includes(value.toLowerCase()))) {
+      if (allTagsCopy.find((el) => el.includes(textValue.toLowerCase()))) {
         TagList.push(allTags[i]);
       }
     }

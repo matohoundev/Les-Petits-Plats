@@ -5,8 +5,6 @@ import filter from "./Dropdown/dropddown.js";
 import recipesFactory from "./Factory/RecipesFactory.js";
 
 (function init() {
-  // new ApiServices().getAppliance();
-  // new ApiServices().getIngredients();
   const AllRecipes = new ApiServices().getRecipes();
 
   Promise.all(AllRecipes)
@@ -25,33 +23,26 @@ function displayRecipes(recipes) {
   let boxTag = document.querySelector("#tag-select");
   let nothingResearch = document.querySelector("#nothing-in-research");
 
+  // on récupère les tags
   const researchTag = {
     ingredient: [],
     appliance: "",
     ustensil: [],
   };
-  // let newListRecipes;
+
   let textInSearchBar;
 
+  // recherche dans la barre de recherche
   searchBar.addEventListener("input", (e) => {
     textInSearchBar = e.target.value;
     const newListRecipes = new ApiServices().searchRecipes(
       textInSearchBar,
       researchTag
     );
-    listRecipes.replaceChildren();
-    newListRecipes.forEach((newRecipe) => {
-      const recipeModel = recipesFactory(newRecipe);
-      const recipeCardDOM = recipeModel.getRecipesCardDOM();
-      listRecipes.appendChild(recipeCardDOM);
-    });
-    if (newListRecipes.length === 0) {
-      nothingResearch.style.display = "block";
-    } else {
-      nothingResearch.style.display = "none";
-    }
+    reDisplayRecipes(newListRecipes);
   });
 
+  // recherche dans les tags
   for (let i = 0; i < chevron.length; i++) {
     chevron[i].addEventListener("click", (e) => {
       const chevronDOM = e.target;
@@ -81,17 +72,7 @@ function displayRecipes(recipes) {
             ingredient,
             boxTag
           );
-          listRecipes.replaceChildren();
-          newListRecipes.forEach((newRecipe) => {
-            const recipeModel = recipesFactory(newRecipe);
-            const recipeCardDOM = recipeModel.getRecipesCardDOM();
-            listRecipes.appendChild(recipeCardDOM);
-          });
-          if (newListRecipes.length === 0) {
-            nothingResearch.style.display = "block";
-          } else {
-            nothingResearch.style.display = "none";
-          }
+          reDisplayRecipes(newListRecipes);
         },
         function TagAppliance(appliance) {
           researchTag.appliance = appliance;
@@ -106,17 +87,7 @@ function displayRecipes(recipes) {
             appliance,
             boxTag
           );
-          listRecipes.replaceChildren();
-          newListRecipes.forEach((newRecipe) => {
-            const recipeModel = recipesFactory(newRecipe);
-            const recipeCardDOM = recipeModel.getRecipesCardDOM();
-            listRecipes.appendChild(recipeCardDOM);
-          });
-          if (newListRecipes.length === 0) {
-            nothingResearch.style.display = "block";
-          } else {
-            nothingResearch.style.display = "none";
-          }
+          reDisplayRecipes(newListRecipes);
         },
         function TagUstensils(ustensil) {
           researchTag.ustensil.push(ustensil);
@@ -131,41 +102,39 @@ function displayRecipes(recipes) {
             ustensil,
             boxTag
           );
-          listRecipes.replaceChildren();
-          newListRecipes.forEach((newRecipe) => {
-            const recipeModel = recipesFactory(newRecipe);
-            const recipeCardDOM = recipeModel.getRecipesCardDOM();
-            listRecipes.appendChild(recipeCardDOM);
-          });
-          if (newListRecipes.length === 0) {
-            nothingResearch.style.display = "block";
-          } else {
-            nothingResearch.style.display = "none";
-          }
+          reDisplayRecipes(newListRecipes);
         }
       );
     });
   }
 
+  // supprimer un tag
   boxTag.addEventListener("click", (e) => {
     new filter().deleteTag(e, boxTag, researchTag);
     const updateListRecipes = new ApiServices().searchRecipes(
       textInSearchBar,
       researchTag
     );
+    reDisplayRecipes(updateListRecipes);
+  });
+
+  // ré-afficher les recettes si on ajoute un tag et qu'on recherche ou qu'on supprime un tag ou du texte dans la barre de recherche
+  function reDisplayRecipes(newListRecipes) {
     listRecipes.replaceChildren();
-    updateListRecipes.forEach((newRecipe) => {
+    newListRecipes.forEach((newRecipe) => {
       const recipeModel = recipesFactory(newRecipe);
       const recipeCardDOM = recipeModel.getRecipesCardDOM();
       listRecipes.appendChild(recipeCardDOM);
     });
-    if (updateListRecipes.length === 0) {
+
+    if (newListRecipes.length === 0) {
       nothingResearch.style.display = "block";
     } else {
       nothingResearch.style.display = "none";
     }
-  });
+  }
 
+  // afficher toutes les recettes par défaut
   recipes.forEach((recipe) => {
     const recipeModel = recipesFactory(recipe);
     const recipeCardDOM = recipeModel.getRecipesCardDOM();
