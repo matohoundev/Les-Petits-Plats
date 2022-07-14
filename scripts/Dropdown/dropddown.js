@@ -1,21 +1,17 @@
 import ApiServices from "../ApiServices/apiServices.js";
 
-let toggleIndex;
-
 export default class filter {
   style(chevronDOM, labelDOM, listeDOM, inputDOM) {
-    if (!toggleIndex) {
+    if (chevronDOM.style.transform === "rotate(0deg)") {
       chevronDOM.style.transform = "rotate(180deg)";
       labelDOM.parentNode.firstElementChild.classList.add("hidden");
       inputDOM.classList.remove("hidden");
       listeDOM.classList.remove("hidden");
-      toggleIndex = true;
     } else {
       chevronDOM.style.transform = "rotate(0deg)";
       labelDOM.parentNode.firstElementChild.classList.remove("hidden");
       inputDOM.classList.add("hidden");
       listeDOM.classList.add("hidden");
-      toggleIndex = false;
     }
   }
 
@@ -36,19 +32,19 @@ export default class filter {
     } else if (tag === "appliance-chevron") {
       liste.replaceChildren();
       allAppliance = new ApiServices().getAppliance();
-      allAppliance.forEach((ingredient) =>
+      allAppliance.forEach((appliance) =>
         liste.insertAdjacentHTML(
           "beforeend",
-          `<li class="py-1.5">` + ingredient + `</li>`
+          `<li class="py-1.5">` + appliance + `</li>`
         )
       );
     } else if (tag === "ustensil-chevron") {
       liste.replaceChildren();
       allUstensils = new ApiServices().getUstensils();
-      allUstensils.forEach((ingredient) =>
+      allUstensils.forEach((ustensil) =>
         liste.insertAdjacentHTML(
           "beforeend",
-          `<li class="py-1.5">` + ingredient + `</li>`
+          `<li class="py-1.5">` + ustensil + `</li>`
         )
       );
     } else {
