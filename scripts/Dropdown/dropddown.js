@@ -252,44 +252,40 @@ export default class filter {
     let tagDelete = "";
     if (tagSelect === "span") {
       tagDelete = e.target.textContent;
-      for (let i = 0; i < researchTag.ingredient.length; i++) {
-        const ingredient = researchTag.ingredient[i];
+      researchTag.ingredient.forEach((ingredient, i) => {
         if (ingredient === tagDelete) {
           researchTag.ingredient.splice(i, 1);
           e.target.remove();
         }
-      }
+      });
       if (researchTag.appliance === tagDelete) {
         researchTag.appliance = "";
         e.target.remove();
       }
-      for (let i = 0; i < researchTag.ustensil.length; i++) {
-        const ustensil = researchTag.ustensil[i];
+      researchTag.ustensil.forEach((ustensil, i) => {
         if (ustensil === tagDelete) {
           researchTag.ustensil.splice(i, 1);
           e.target.remove();
         }
-      }
+      });
     } else if (tagSelect === "i") {
       tagDelete = e.target.parentElement.textContent;
-      for (let i = 0; i < researchTag.ingredient.length; i++) {
-        const ingredient = researchTag.ingredient[i];
+      researchTag.ingredient.forEach((ingredient, i) => {
         if (ingredient === tagDelete) {
           researchTag.ingredient.splice(i, 1);
           e.target.parentElement.remove();
         }
-      }
+      });
       if (researchTag.appliance === tagDelete) {
         researchTag.appliance = "";
         e.target.parentElement.remove();
       }
-      for (let i = 0; i < researchTag.ustensil.length; i++) {
-        const ustensil = researchTag.ustensil[i];
+      researchTag.ustensil.forEach((ustensil, i) => {
         if (ustensil === tagDelete) {
           researchTag.ustensil.splice(i, 1);
           e.target.parentElement.remove();
         }
-      }
+      });
     }
     if (
       researchTag.ingredient.length === 0 &&
