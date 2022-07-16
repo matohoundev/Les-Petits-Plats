@@ -45,16 +45,15 @@ function displayRecipes(recipes) {
   // recherche dans les tags
   for (let i = 0; i < chevron.length; i++) {
     chevron[i].addEventListener("click", (e) => {
-      const chevronDOM = e.target;
       const labelDOM = e.target.parentNode.firstElementChild;
       const inputDOM = e.target.previousElementSibling;
       const listeDOM = e.target.parentNode.nextElementSibling;
 
-      new filter().style(chevronDOM, labelDOM, listeDOM, inputDOM);
-      new filter().displayAllTag(chevronDOM.id, listeDOM);
-      new filter().inputSearchTag(chevronDOM.id, listeDOM, inputDOM);
+      new filter().style(chevron[i], labelDOM, listeDOM, inputDOM);
+      new filter().displayAllTag(chevron[i].id, listeDOM);
+      new filter().inputSearchTag(chevron[i].id, listeDOM, inputDOM);
       new filter().clickAddTag(
-        chevronDOM.id,
+        chevron[i].id,
         listeDOM,
         researchTag.ingredient,
         researchTag.appliance,
