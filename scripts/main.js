@@ -45,7 +45,6 @@ function displayRecipes(recipes) {
   // recherche dans les tags
   chevron.forEach((chevronDOM) => {
     chevronDOM.addEventListener("click", (e) => {
-      const chevronDOM = e.target;
       const labelDOM = e.target.parentNode.firstElementChild;
       const inputDOM = e.target.previousElementSibling;
       const listeDOM = e.target.parentNode.nextElementSibling;
@@ -73,14 +72,7 @@ function displayRecipes(recipes) {
             boxTag
           );
           reDisplayRecipes(newListRecipes);
-        }
-      );
-      new filter().clickAddTag(
-        chevronDOM.id,
-        listeDOM,
-        researchTag.ingredient,
-        researchTag.appliance,
-        researchTag.ustensil,
+        },
         function TagAppliance(appliance) {
           researchTag.appliance = appliance;
           const newListRecipes = new ApiServices().searchRecipes(
@@ -95,14 +87,7 @@ function displayRecipes(recipes) {
             boxTag
           );
           reDisplayRecipes(newListRecipes);
-        }
-      );
-      new filter().clickAddTag(
-        chevronDOM.id,
-        listeDOM,
-        researchTag.ingredient,
-        researchTag.appliance,
-        researchTag.ustensil,
+        },
         function TagUstensils(ustensil) {
           researchTag.ustensil.push(ustensil);
           const newListRecipes = new ApiServices().searchRecipes(
