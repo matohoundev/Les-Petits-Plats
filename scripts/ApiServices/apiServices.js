@@ -7,40 +7,72 @@ export default class ApiServices {
 
   searchRecipes(searchValue, tags) {
     let searchRecipes = recipes;
+    let RecupAppliance = [];
+    let RecupIngredient = [];
+    let RecupUstensil = [];
 
     if (searchValue && searchValue.length >= 3) {
-      searchRecipes = recipes.filter(
-        (r) =>
-          r.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-          r.description.toLowerCase().includes(searchValue.toLowerCase()) ||
-          r.ingredients.some((i) =>
+      for (let i = 0; i < searchRecipes.length; i++) {
+        if (
+          !searchRecipes[i].name
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()) &&
+          !searchRecipes[i].description
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()) &&
+          !searchRecipes[i].ingredients.some((i) =>
             i.ingredient.toLowerCase().includes(searchValue.toLowerCase())
           )
-      );
+        ) {
+          searchRecipes.splice(i, 1);
+          i--;
+        }
+      }
     }
 
     if (tags.appliance) {
-      searchRecipes = searchRecipes.filter((r) =>
-        r.appliance.includes(tags.appliance)
-      );
+      for (let i = 0; i < searchRecipes.length; i++) {
+        if (searchRecipes[i].appliance.includes(tags.appliance)) {
+          RecupAppliance.push(searchRecipes[i]);
+        }
+      }
+      if (RecupAppliance.length > 0) {
+        searchRecipes = RecupAppliance;
+      }
     }
     if (tags.ingredient) {
-      searchRecipes = searchRecipes.filter((r) => {
-        for (let i = 0; i < r.ingredients.length; i++) {
-          if (r.ingredients[i].ingredient.includes(tags.ingredient)) {
-            return r;
+      for (let i = 0; i < searchRecipes.length; i++) {
+        for (let o = 0; o < searchRecipes[i].ingredients.length; o++) {
+          if (
+            searchRecipes[i].ingredients[o].ingredient.includes(tags.ingredient)
+          ) {
+            RecupIngredient.push(searchRecipes[i]);
           }
         }
-      });
+      }
+
+      if (tags.ingredient.length === 0) {
+        RecupIngredient = [];
+      }
+
+      if (RecupIngredient.length > 0) {
+        searchRecipes = RecupIngredient;
+      }
     }
     if (tags.ustensil) {
-      searchRecipes = searchRecipes.filter((r) => {
-        for (let i = 0; i < r.ustensils.length; i++) {
-          if (r.ustensils[i].includes(tags.ustensil)) {
-            return r;
+      for (let i = 0; i < searchRecipes.length; i++) {
+        for (let o = 0; o < searchRecipes[i].ustensils.length; o++) {
+          if (searchRecipes[i].ustensils[o].includes(tags.ustensil)) {
+            RecupUstensil.push(searchRecipes[i]);
           }
         }
-      });
+      }
+      if (tags.ustensil.length === 0) {
+        RecupUstensil = [];
+      }
+      if (RecupUstensil.length > 0) {
+        searchRecipes = RecupUstensil;
+      }
     }
 
     return searchRecipes;
