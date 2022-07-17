@@ -25,14 +25,22 @@ export default class ApiServices {
       );
     }
     if (tags.ingredient) {
-      searchRecipes = searchRecipes.filter((r) =>
-        r.ingredients.some((i) => i.ingredient.includes(tags.ingredient))
-      );
+      searchRecipes = searchRecipes.filter((r) => {
+        for (let i = 0; i < r.ingredients.length; i++) {
+          if (r.ingredients[i].ingredient.includes(tags.ingredient)) {
+            return r;
+          }
+        }
+      });
     }
     if (tags.ustensil) {
-      searchRecipes = searchRecipes.filter((r) =>
-        r.ustensils.some((i) => i.includes(tags.ustensil))
-      );
+      searchRecipes = searchRecipes.filter((r) => {
+        for (let i = 0; i < r.ustensils.length; i++) {
+          if (r.ustensils[i].includes(tags.ustensil)) {
+            return r;
+          }
+        }
+      });
     }
 
     return searchRecipes;
