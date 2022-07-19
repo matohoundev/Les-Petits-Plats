@@ -7,6 +7,7 @@ export default class ApiServices {
 
   searchRecipes(searchValue, tags) {
     let searchRecipes = recipes;
+    let searchRecipesCopy = [...recipes];
     let RecupAppliance = [];
     let RecupIngredient = [];
     let RecupUstensil = [];
@@ -37,7 +38,12 @@ export default class ApiServices {
         }
       }
       if (RecupAppliance.length > 0) {
-        searchRecipes = RecupAppliance;
+        for (let i = 0; i < searchRecipesCopy.length; i++) {
+          if (!RecupAppliance.includes(searchRecipesCopy[i])) {
+            searchRecipesCopy.splice(i, 1);
+            i--;
+          }
+        }
       }
     }
     if (tags.ingredient) {
@@ -50,13 +56,27 @@ export default class ApiServices {
           }
         }
       }
-
-      if (tags.ingredient.length === 0) {
-        RecupIngredient = [];
-      }
-
-      if (RecupIngredient.length > 0) {
-        searchRecipes = RecupIngredient;
+      for (let i = 0; i < searchRecipesCopy.length; i++) {
+        let count = 0;
+        for (let o = 0; o < searchRecipesCopy[i].ingredients.length; o++) {
+          if (
+            RecupIngredient.some((a) =>
+              a.ingredients.find((b) =>
+                b.ingredient.includes(
+                  searchRecipesCopy[i].ingredients[o].ingredient
+                )
+              )
+            )
+          ) {
+            count++;
+          }
+        }
+        if (count !== searchRecipesCopy[i].ingredients.length) {
+          console.log("avant", searchRecipesCopy);
+          searchRecipesCopy.splice(i, 1);
+          i--;
+          console.log("après", searchRecipesCopy);
+        }
       }
     }
     if (tags.ustensil) {
@@ -67,15 +87,33 @@ export default class ApiServices {
           }
         }
       }
-      if (tags.ustensil.length === 0) {
-        RecupUstensil = [];
-      }
-      if (RecupUstensil.length > 0) {
-        searchRecipes = RecupUstensil;
+      for (let i = 0; i < searchRecipesCopy.length; i++) {
+        let count = 0;
+        for (let o = 0; o < searchRecipesCopy[i].ustensils.length; o++) {
+          if (
+            RecupUstensil.some((a) =>
+              a.ustensils.find((b) =>
+                b.includes(searchRecipesCopy[i].ustensils[o])
+              )
+            )
+          ) {
+            count++;
+          }
+        }
+        if (count !== searchRecipesCopy[i].ustensils.length) {
+          searchRecipesCopy.splice(i, 1);
+          i--;
+        }
       }
     }
 
-    return searchRecipes;
+    // if (searchRecipes.length === 0) {
+    //   searchRecipesCopy = recipes;
+    // }
+
+    console.log(searchRecipesCopy);
+
+    return searchRecipesCopy;
   }
 
   searchTag(textValue, allTags) {
