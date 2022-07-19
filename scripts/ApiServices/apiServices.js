@@ -7,28 +7,25 @@ export default class ApiServices {
 
   searchRecipes(searchValue, tags) {
     let searchRecipes = recipes;
-    let searchRecipesCopy = [...recipes];
-    let RecupAppliance = [];
-    let RecupIngredient = [];
-    let RecupUstensil = [];
+    let searchRecipesCopy = [];
 
-    if (searchValue && searchValue.length >= 3) {
+    if (searchValue.length > 2) {
       for (let i = 0; i < searchRecipes.length; i++) {
         if (
-          !searchRecipes[i].name
+          searchRecipes[i].name
             .toLowerCase()
-            .includes(searchValue.toLowerCase()) &&
-          !searchRecipes[i].description
+            .includes(searchValue.toLowerCase()) ||
+          searchRecipes[i].description
             .toLowerCase()
-            .includes(searchValue.toLowerCase()) &&
-          !searchRecipes[i].ingredients.some((i) =>
+            .includes(searchValue.toLowerCase()) ||
+          searchRecipes[i].ingredients.some((i) =>
             i.ingredient.toLowerCase().includes(searchValue.toLowerCase())
           )
         ) {
-          searchRecipes.splice(i, 1);
-          i--;
+          searchRecipesCopy.push(searchRecipes[i]);
         }
       }
+      searchRecipes = searchRecipesCopy;
     }
 
     if (tags.appliance) {
@@ -48,12 +45,6 @@ export default class ApiServices {
         tags.ustensil.every((i) => r.ustensils.some((ing) => ing.includes(i)))
       );
     }
-
-    // if (searchRecipes.length === 0) {
-    //   searchRecipesCopy = recipes;
-    // }
-
-    console.log(searchRecipesCopy);
 
     return searchRecipes;
   }
