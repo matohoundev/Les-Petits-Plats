@@ -32,79 +32,21 @@ export default class ApiServices {
     }
 
     if (tags.appliance) {
-      for (let i = 0; i < searchRecipes.length; i++) {
-        if (searchRecipes[i].appliance.includes(tags.appliance)) {
-          RecupAppliance.push(searchRecipes[i]);
-        }
-      }
-      if (RecupAppliance.length > 0) {
-        for (let i = 0; i < searchRecipesCopy.length; i++) {
-          if (!RecupAppliance.includes(searchRecipesCopy[i])) {
-            searchRecipesCopy.splice(i, 1);
-            i--;
-          }
-        }
-      }
+      searchRecipes = searchRecipes.filter((r) =>
+        r.appliance.includes(tags.appliance)
+      );
     }
     if (tags.ingredient) {
-      for (let i = 0; i < searchRecipes.length; i++) {
-        for (let o = 0; o < searchRecipes[i].ingredients.length; o++) {
-          if (
-            searchRecipes[i].ingredients[o].ingredient.includes(tags.ingredient)
-          ) {
-            RecupIngredient.push(searchRecipes[i]);
-          }
-        }
-      }
-      for (let i = 0; i < searchRecipesCopy.length; i++) {
-        let count = 0;
-        for (let o = 0; o < searchRecipesCopy[i].ingredients.length; o++) {
-          if (
-            RecupIngredient.some((a) =>
-              a.ingredients.find((b) =>
-                b.ingredient.includes(
-                  searchRecipesCopy[i].ingredients[o].ingredient
-                )
-              )
-            )
-          ) {
-            count++;
-          }
-        }
-        if (count !== searchRecipesCopy[i].ingredients.length) {
-          console.log("avant", searchRecipesCopy);
-          searchRecipesCopy.splice(i, 1);
-          i--;
-          console.log("après", searchRecipesCopy);
-        }
-      }
+      searchRecipes = searchRecipes.filter((r) =>
+        tags.ingredient.every((i) =>
+          r.ingredients.some((ing) => ing.ingredient.includes(i))
+        )
+      );
     }
     if (tags.ustensil) {
-      for (let i = 0; i < searchRecipes.length; i++) {
-        for (let o = 0; o < searchRecipes[i].ustensils.length; o++) {
-          if (searchRecipes[i].ustensils[o].includes(tags.ustensil)) {
-            RecupUstensil.push(searchRecipes[i]);
-          }
-        }
-      }
-      for (let i = 0; i < searchRecipesCopy.length; i++) {
-        let count = 0;
-        for (let o = 0; o < searchRecipesCopy[i].ustensils.length; o++) {
-          if (
-            RecupUstensil.some((a) =>
-              a.ustensils.find((b) =>
-                b.includes(searchRecipesCopy[i].ustensils[o])
-              )
-            )
-          ) {
-            count++;
-          }
-        }
-        if (count !== searchRecipesCopy[i].ustensils.length) {
-          searchRecipesCopy.splice(i, 1);
-          i--;
-        }
-      }
+      searchRecipes = searchRecipes.filter((r) =>
+        tags.ustensil.every((i) => r.ustensils.some((ing) => ing.includes(i)))
+      );
     }
 
     // if (searchRecipes.length === 0) {
@@ -113,7 +55,7 @@ export default class ApiServices {
 
     console.log(searchRecipesCopy);
 
-    return searchRecipesCopy;
+    return searchRecipes;
   }
 
   searchTag(textValue, allTags) {
