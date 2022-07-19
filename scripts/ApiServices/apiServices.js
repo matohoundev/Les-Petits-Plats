@@ -26,12 +26,14 @@ export default class ApiServices {
     }
     if (tags.ingredient) {
       searchRecipes = searchRecipes.filter((r) =>
-        r.ingredients.some((i) => i.ingredient.includes(tags.ingredient))
+        tags.ingredient.every((i) =>
+          r.ingredients.some((ing) => ing.ingredient.includes(i))
+        )
       );
     }
     if (tags.ustensil) {
       searchRecipes = searchRecipes.filter((r) =>
-        r.ustensils.some((i) => i.includes(tags.ustensil))
+        tags.ustensil.every((i) => r.ustensils.some((ing) => ing.includes(i)))
       );
     }
 
