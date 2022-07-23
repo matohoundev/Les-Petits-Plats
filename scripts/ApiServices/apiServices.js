@@ -43,28 +43,24 @@ export default class ApiServices {
   searchTag(textValue, allTags) {
     const TagList = [];
 
-    for (let i = 0; i < allTags.length; i++) {
-      const allTagsCopy = [];
-
-      allTagsCopy.push(allTags[i].toLowerCase());
-
-      if (allTagsCopy.find((el) => el.includes(textValue.toLowerCase()))) {
-        TagList.push(allTags[i]);
+    allTags.forEach((tag) => {
+      if (tag.toLowerCase().includes(textValue.toLowerCase())) {
+        TagList.push(tag);
       }
-    }
+    });
+
     return TagList;
   }
 
   getIngredients() {
     const ingredients = [];
 
-    for (let i = 0; i < recipes.length; i++) {
-      for (let j = 0; j < recipes[i].ingredients.length; j++) {
-        if (!ingredients.includes(recipes[i].ingredients[j].ingredient)) {
-          ingredients.push(recipes[i].ingredients[j].ingredient);
-        }
-      }
-    }
+    recipes.forEach((r) =>
+      r.ingredients.forEach(
+        (i) =>
+          !ingredients.includes(i.ingredient) && ingredients.push(i.ingredient)
+      )
+    );
 
     ingredients.sort();
 
@@ -74,12 +70,9 @@ export default class ApiServices {
   getAppliance() {
     const appliance = [];
 
-    for (let i = 0; i < recipes.length; i++) {
-      // on ne récupère pas les doublons
-      if (!appliance.includes(recipes[i].appliance)) {
-        appliance.push(recipes[i].appliance);
-      }
-    }
+    recipes.forEach(
+      (r) => !appliance.includes(r.appliance) && appliance.push(r.appliance)
+    );
 
     appliance.sort();
 
@@ -89,14 +82,9 @@ export default class ApiServices {
   getUstensils() {
     const ustensils = [];
 
-    for (let i = 0; i < recipes.length; i++) {
-      // on ne récupère pas les doublons
-      for (let o = 0; o < recipes[i].ustensils.length; o++) {
-        if (!ustensils.includes(recipes[i].ustensils[o])) {
-          ustensils.push(recipes[i].ustensils[o]);
-        }
-      }
-    }
+    recipes.forEach((r) =>
+      r.ustensils.forEach((i) => !ustensils.includes(i) && ustensils.push(i))
+    );
 
     ustensils.sort();
 
