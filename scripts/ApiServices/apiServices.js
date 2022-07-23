@@ -9,7 +9,7 @@ export default class ApiServices {
     let searchRecipes = recipes;
     let searchRecipesCopy = [];
 
-    if (searchValue.length > 2) {
+    if (searchValue && searchValue.length > 2) {
       for (let i = 0; i < searchRecipes.length; i++) {
         if (
           searchRecipes[i].name
