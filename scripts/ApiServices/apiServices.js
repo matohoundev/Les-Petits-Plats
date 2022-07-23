@@ -68,18 +68,15 @@ export default class ApiServices {
     const ingredients = [];
 
     for (let i = 0; i < recipes.length; i++) {
-      // on ne récupère pas les doublons
-      let RecupIngredients = [...recipes[i].ingredients];
-      for (let o = 0; o < RecupIngredients.length; o++) {
-        if (!ingredients.includes(RecupIngredients[o].ingredient)) {
-          ingredients.push(RecupIngredients[o].ingredient);
+      for (let j = 0; j < recipes[i].ingredients.length; j++) {
+        if (!ingredients.includes(recipes[i].ingredients[j].ingredient)) {
+          ingredients.push(recipes[i].ingredients[j].ingredient);
         }
       }
     }
 
     ingredients.sort();
 
-    // console.log("ingredient", ingredients);
     return ingredients;
   }
 
